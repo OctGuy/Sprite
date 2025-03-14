@@ -1,11 +1,6 @@
 #include "Game.h"
 #include "Mario.h"
 
-CMario::CMario(float x, float y, float vx):CGameObject(x, y)
-{
-	this->vx = vx;
-};
-
 void CMario::Update(DWORD dt)
 {
 	x += vx*dt;
@@ -37,10 +32,3 @@ void CMario::Render()
 	ani->Render(x, y);
 }
 
-void CBrick::Render() {
-
-	LPANIMATION ani = CAnimations::GetInstance()->Get(510);
-
-	ani->Render(x, y);
-
-}

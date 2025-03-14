@@ -26,6 +26,7 @@
 
 
 #include "Mario.h"
+#include "Brick.h"
 
 
 #define WINDOW_CLASS_NAME L"SampleWindow"
@@ -49,6 +50,7 @@ CMario *mario;
 #define MARIO_START_X 10.0f
 #define MARIO_START_Y 130.0f
 #define MARIO_START_VX 0.1f
+#define MARIO_START_VY 0.1f
 
 CBrick *brick;
 
@@ -125,7 +127,7 @@ void LoadResources()
 	animations->Add(510, ani);
 	
 	
-	mario = new CMario(MARIO_START_X, MARIO_START_Y, MARIO_START_VX);
+	mario = new CMario(MARIO_START_X, MARIO_START_Y, MARIO_START_VX, MARIO_START_VY);
 	brick = new CBrick(100.0f, 100.0f);
 }
 
