@@ -27,6 +27,7 @@
 
 #include "Mario.h"
 #include "Brick.h"
+#include "Goomba.h"
 
 
 #define WINDOW_CLASS_NAME L"SampleWindow"
@@ -50,7 +51,17 @@ CMario *mario;
 #define MARIO_START_X 10.0f
 #define MARIO_START_Y 130.0f
 #define MARIO_START_VX 0.1f
-#define MARIO_START_VY 0.1f
+#define MARIO_START_VY 0.0f
+#define MARIO_WIDTH 14
+#define MARIO_HEIGHT 27
+
+CGoomba* goomba;
+#define GOOMBA_START_X 50.0f
+#define GOOMBA_START_Y 130.0f
+#define GOOMBA_START_VX 0.1f
+#define GOOMBA_START_VY 0.1f
+#define GOOMBA_WIDTH 16
+#define GOOMBA_HEIGHT 16
 
 CBrick *brick;
 
@@ -76,7 +87,7 @@ void LoadResources()
 	CTextures * textures = CTextures::GetInstance();
 
 	textures->Add(ID_TEX_MARIO, TEXTURE_PATH_MARIO);
-	//textures->Add(ID_ENEMY_TEXTURE, TEXTURE_PATH_ENEMIES, D3DCOLOR_XRGB(156, 219, 239));
+	textures->Add(ID_TEX_ENEMY, TEXTURE_PATH_ENEMIES);
 	textures->Add(ID_TEX_MISC, TEXTURE_PATH_MISC);
 
 
@@ -84,7 +95,7 @@ void LoadResources()
 	
 	LPTEXTURE texMario = textures->Get(ID_TEX_MARIO);
 
-	// readline => id, left, top, right 
+	// readline => id, left, top, right, bottom, texture
 
 	sprites->Add(10001, 246, 154, 259, 181, texMario);
 	sprites->Add(10002, 275, 154, 290, 181, texMario);
@@ -125,10 +136,23 @@ void LoadResources()
 	ani->Add(20003);
 	ani->Add(20004);
 	animations->Add(510, ani);
+
+	//Add animation for Goomba
+	LPTEXTURE texEnemies = textures->Get(ID_TEX_ENEMY);
+
+	//Goomba walking sprites
+	sprites->Add(30001, 5, 14, 21, 30, texEnemies);
+	sprites->Add(30002, 25, 14, 41, 30, texEnemies);
+
+	//Goomba walking animation
+	ani = new CAnimation(100);
+	ani->Add(30001);
+	ani->Add(30002);
+	animations->Add(520, ani);
 	
-	
-	mario = new CMario(MARIO_START_X, MARIO_START_Y, MARIO_START_VX, MARIO_START_VY);
+	mario = new CMario(MARIO_START_X, MARIO_START_Y, MARIO_WIDTH, MARIO_HEIGHT, MARIO_START_VX, MARIO_START_VY);
 	brick = new CBrick(100.0f, 100.0f);
+	goomba = new CGoomba(GOOMBA_START_X, GOOMBA_START_Y, GOOMBA_WIDTH, GOOMBA_HEIGHT, GOOMBA_START_VX, GOOMBA_START_VY);
 }
 
 /*
@@ -138,6 +162,12 @@ void LoadResources()
 void Update(DWORD dt)
 {
 	mario->Update(dt);
+	goomba->Update(dt);
+	// Check collision and handle it if they collide
+	if (mario->CheckCollision(goomba)) {
+		mario->OnCollision(goomba);
+		goomba->OnCollision(mario);  // If needed
+	}
 }
 
 void Render()
@@ -162,6 +192,7 @@ void Render()
 
 		brick->Render();
 		mario->Render();
+		goomba->Render();
 
 		// Uncomment this line to see how to draw a porttion of a texture  
 		//g->Draw(10, 10, texMisc, 300, 117, 316, 133);
