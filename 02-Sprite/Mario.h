@@ -1,25 +1,17 @@
 #pragma once
 
-#include "GameObject.h"
+#include "MovingObject.h"
 
 #include "Animation.h"
 #include "Animations.h"
 
 #define MARIO_WIDTH 14
-
-class CBrick : public CGameObject {
-public: 
-	CBrick(float x, float y) : CGameObject(x, y) {}
-	void Render();
-	void Update(DWORD dt) {}
-};
-
-class CMario : public CGameObject
+class CMario : public CMovingObject
 {
-protected:
-	float vx;
 public:
-	CMario(float x, float y, float vx);
+	CMario(float x, float y, float vx, float vy)
+		: CMovingObject(x, y, vx, vy) {}
+
 	void Update(DWORD dt);
 	void Render();
 };
