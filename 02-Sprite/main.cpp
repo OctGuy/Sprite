@@ -43,13 +43,13 @@
 #define ID_TEX_MISC 20
 
 #define TEXTURES_DIR L"textures"
-#define TEXTURE_PATH_MARIO TEXTURES_DIR "\\mario.png"
+#define TEXTURE_PATH_MARIO TEXTURES_DIR "\\mario_transparent.png"
 #define TEXTURE_PATH_MISC TEXTURES_DIR "\\misc_transparent.png"
 #define TEXTURE_PATH_ENEMIES TEXTURES_DIR "\\enemies.png"
 
 CMario *mario;
 #define MARIO_START_X 10.0f
-#define MARIO_START_Y 160.0f
+#define MARIO_START_Y 130.0f  // 130.0f
 #define MARIO_START_VX 0.1f
 #define MARIO_START_VY 0.0f
 #define MARIO_WIDTH 14
@@ -105,9 +105,13 @@ void LoadResources()
 	sprites->Add(10012, 155, 154, 171, 181, texMario);
 	sprites->Add(10013, 125, 154, 141, 181, texMario);
 
+	sprites->Add(10014, 274, 194, 274 + 19 - 1, 194 + 27 - 1, texMario); // jump right
+	sprites->Add(10015, 153, 194, 153 + 19 - 1, 194 + 27 - 1, texMario); // jump left
+
 	CAnimations * animations = CAnimations::GetInstance();
 	LPANIMATION ani;
 
+	// Move right animation
 	ani = new CAnimation(100);
 	ani->Add(10001);
 	ani->Add(10002);
@@ -115,12 +119,33 @@ void LoadResources()
 	animations->Add(500, ani);
 
 
-
+	// Move left animation
 	ani = new CAnimation(100);
 	ani->Add(10011);
 	ani->Add(10012);
 	ani->Add(10013);
 	animations->Add(501, ani);
+
+	// Stationery right
+	ani = new CAnimation(100);
+	ani->Add(10001);		
+	animations->Add(502, ani);
+
+	// Stationery left
+	ani = new CAnimation(100);
+	ani->Add(10011);		
+	animations->Add(503, ani);
+
+	// Jumping right
+	ani = new CAnimation(100);
+	ani->Add(10014);
+	animations->Add(504, ani);
+
+	// Jumping left
+	ani = new CAnimation(100);
+	ani->Add(10015);
+	animations->Add(505, ani);
+
 
 
 
@@ -168,6 +193,7 @@ void Update(DWORD dt)
 		mario->OnCollision(goomba);
 		goomba->OnCollision(mario);  // If needed
 	}
+	DebugOutTitle(L"02 - Sprite %0.1f, %0.1f", mario->GetX(), mario->GetY());
 }
 
 void Render()
