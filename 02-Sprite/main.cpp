@@ -49,7 +49,7 @@
 
 CMario *mario;
 #define MARIO_START_X 10.0f
-#define MARIO_START_Y 130.0f
+#define MARIO_START_Y 160.0f
 #define MARIO_START_VX 0.1f
 #define MARIO_START_VY 0.0f
 #define MARIO_WIDTH 14

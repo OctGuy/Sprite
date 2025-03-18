@@ -10,9 +10,13 @@
 #define MARIO_WIDTH 14
 class CMario : public CMovingObject
 {
+protected:
+	bool direction; //true: right, false: left
 public:
 	CMario(float x, float y, float width, float height, float vx, float vy)
-		: CMovingObject(x, y, width, height, vx, vy) {}
+		: CMovingObject(x, y, width, height, vx, vy) {
+		direction = true; // Right direction for default
+	}
 
 	void Update(DWORD dt);
 	void Render();
